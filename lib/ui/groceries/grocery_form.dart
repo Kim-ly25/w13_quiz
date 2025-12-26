@@ -54,7 +54,6 @@ class _GroceryFormState extends State<GroceryForm> {
 
   void onAdd() {
     if (_formKey.currentState!.validate()) {
- 
       // Create and return the new grocery
       Grocery newGrocery = Grocery(
         id: uuid.v4(),
@@ -68,16 +67,15 @@ class _GroceryFormState extends State<GroceryForm> {
   }
 
   String? validateName(String? value) {
-
     if (value == null || value.isEmpty) {
       return "Enter a name";
     }
 
-    if (value.length<10 || value.length>50) {
+    if (value.length < 10 || value.length > 50) {
       return "Enter a text btw 10 to 50 characters";
     }
 
-    return null;  //valid
+    return null; //valid
   }
 
   @override

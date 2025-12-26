@@ -11,7 +11,7 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-  int _currentTap = 0;
+  int _currentTab = 0;
 
   void onCreate() async {
     // Navigate to the form screen using the Navigator push
@@ -34,15 +34,15 @@ class _GroceryListState extends State<GroceryList> {
         actions: [IconButton(onPressed: onCreate, icon: const Icon(Icons.add))],
       ),
       body: IndexedStack(
-        index: _currentTap,
-        children: [GroceryTap(), GrocerySearch()],
+        index: _currentTab,
+        children: [GroceryTab(), GrocerySearch()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blue[400],
-        currentIndex: _currentTap,
+        currentIndex: _currentTab,
         onTap: (index) {
           setState(() {
-            _currentTap = index;
+            _currentTab = index;
           });
         },
         items: const [
@@ -72,8 +72,8 @@ class GroceryTile extends StatelessWidget {
   }
 }
 
-class GroceryTap extends StatelessWidget {
-  const GroceryTap({super.key});
+class GroceryTab extends StatelessWidget {
+  const GroceryTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -98,18 +98,18 @@ class GrocerySearch extends StatefulWidget {
 }
 
 class _GrocerySearchState extends State<GrocerySearch> {
-  String searchText = "";
+  String _searchQuery = "";
 
-  void onchange(String value) {
+  void _onSearchChanged(String value) {
     setState(() {
-      searchText = value;
+      _searchQuery = value;
     });
   }
 
-  List<Grocery> get listFilter {
-    List<Grocery> result = [];
-    for (Grocery grocery in dummyGroceryItems) {
-      if (grocery.name.toLowerCase().startsWith(searchText)) {
+  List<Grocery> get filteredGroceries {
+    final List<Grocery> result = [];
+    for (final Grocery grocery in dummyGroceryItems) {
+      if (grocery.name.toLowerCase().startsWith(_searchQuery)) {
         result.add(grocery);
       }
     }
@@ -122,13 +122,13 @@ class _GrocerySearchState extends State<GrocerySearch> {
       padding: const EdgeInsets.all(15),
       child: Column(
         children: [
-          TextField(onChanged: onchange),
+          TextField(onChanged: _onSearchChanged),
           const SizedBox(height: 15),
           Expanded(
             child: ListView.builder(
-              itemCount: listFilter.length,
+              itemCount: filteredGroceries.length,
               itemBuilder: (context, index) =>
-                  GroceryTile(grocery: listFilter[index]),
+                  GroceryTile(grocery: filteredGroceries[index]),
             ),
           ),
         ],
